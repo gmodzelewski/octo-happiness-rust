@@ -1,0 +1,9 @@
+apiVersion: v2
+name: octo-happiness-rust
+description: A helm chart for rust grpc
+type: application
+version: 1.0.1
+appVersion: "v1.0.0-SNAPSHOT"
+maintainers:
+    - name: Georg Modzelewski
+      email: georg@redhat.com

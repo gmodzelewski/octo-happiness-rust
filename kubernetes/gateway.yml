@@ -1,0 +1,34 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: services-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - hosts:
+      - '*'
+    port:
+      number: 80
+      name: http
+      protocol: HTTP
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: octo-gateway
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - services-gateway
+  http:
+  - match:
+      #- port: 80
+      - uri:
+        prefix: /helloworld.Greeter
+    route:
+      - destination:
+          host: rusty-grpc
+          port:
+            number: 9000

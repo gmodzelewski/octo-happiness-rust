@@ -1,0 +1,22 @@
+{{- if has "servicemesh" .Values.feature }}
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ include "app.fullname" . }}-vs
+spec:
+  hosts:
+    - '*'
+  gateways:
+    - {{ include "app.fullname" . }}-gateway
+  http:
+    - match:
+        #- port: 80
+        - uri:
+            prefix: /helloworld.Greeter
+      route:
+        - destination:
+            host: {{ .Release.Name }}-service
+            subset: dev
+            port:
+              number: 9000
+{{- end }}

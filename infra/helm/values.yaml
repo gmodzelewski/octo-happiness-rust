@@ -1,0 +1,9 @@
+deployment:
+  replicas: 1
+  includeHealthChecks: false
+
+git:
+  url: https://github.com/gmodzelewski/octo-happiness-rust.git
+    
+feature:
+  - servicemesh

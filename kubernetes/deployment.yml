@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: rusty-grpc
+  name: rusty-grpc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rusty-grpc
+  template:
+    metadata:
+      labels:
+        app: rusty-grpc
+        version: v1
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      containers:
+      - name: rusty-grpc
+        image: quay.io/nlembers/rusty-grpc:1.0
+        imagePullPolicy: IfNotPresent
+        ports:
+          - name: grpc
+            containerPort: 9000
+            protocol: TCP
+        securityContext:
+          privileged: false
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: rusty-grpc
+  name: rusty-grpc
+spec:
+  ports:
+  - port: 9000
+    protocol: TCP
+  selector:
+    app: rusty-grpc

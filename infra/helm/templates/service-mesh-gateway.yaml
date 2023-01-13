@@ -1,0 +1,16 @@
+{{- if has "servicemesh" .Values.feature }}
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ include "app.fullname" . }}-gateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+    - hosts:
+        - 'octo-rust.apps.ocp.ocp-gm.de'
+      port:
+        number: 80
+        name: main
+        protocol: HTTP
+{{- end }}
